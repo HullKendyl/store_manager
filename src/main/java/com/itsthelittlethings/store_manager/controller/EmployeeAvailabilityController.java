@@ -17,7 +17,7 @@ public class EmployeeAvailabilityController {
         try  {
             employeeAvailabilityService.saveAvailability();
         } catch (UnableToSaveEmployeeAvailabilityException unableToSaveEmployeeAvailabilityException) {
-            return ResponseEntity.internalServerError().body("Unable to process request at this time.");
+            return ResponseEntity.internalServerError().body("Unable to process request at this time");
         }
         return ResponseEntity.ok().body("Inserted employee availability");
     }

@@ -1,5 +1,6 @@
 package com.itsthelittlethings.store_manager.controller;
 
+import com.itsthelittlethings.store_manager.UnableToSaveEmployeeAvailabilityException;
 import com.itsthelittlethings.store_manager.controller.EmployeeAvailabilityController;
 import com.itsthelittlethings.store_manager.service.EmployeeAvailabilityService;
 import org.junit.jupiter.api.Assertions;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
@@ -25,24 +27,45 @@ public class EmployeeAvailabilityTest {
         @DisplayName("When an employee enters their availability for the first time")
         class WhenAnEmployeeEntersTheirAvailabilityForTheFirstTimeTest {
 
-            @Test
-            @DisplayName("Then insertEmployeeAvailability returns 200 OK status")
-            void thenInsertEmployeeAvailabilityReturns200OkStatus() {
-                final var employeeAvailabilityController = new EmployeeAvailabilityController(employeeAvailabilityService);
+            @Nested
+            @DisplayName("And the insert is successful")
+            class AndTheInsertIsSuccessfulTest {
+                @Test
+                @DisplayName("Then insertEmployeeAvailability returns 200 OK status")
+                void thenInsertEmployeeAvailabilityReturns200OkStatus() {
+                    final var employeeAvailabilityController = new EmployeeAvailabilityController(employeeAvailabilityService);
 
-                final var result = employeeAvailabilityController.insertEmployeeAvailability();
+                    final var result = employeeAvailabilityController.insertEmployeeAvailability();
 
-                Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
+                    Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
+                }
+
+                @Test
+                @DisplayName("Then insertEmployeeAvailability returns success message")
+                void thenInsertEmployeeAvailabilityReturnsSuccessMessage() {
+                    final var employeeAvailabilityController = new EmployeeAvailabilityController(employeeAvailabilityService);
+
+                    final var result = employeeAvailabilityController.insertEmployeeAvailability();
+
+                    Assertions.assertEquals("Inserted employee availability", result.getBody());
+                }
             }
 
-            @Test
-            @DisplayName("Then insertEmployeeAvailability returns success message")
-            void thenInsertEmployeeAvailabilityReturnsSuccessMessage() {
-                final var employeeAvailabilityController = new EmployeeAvailabilityController(employeeAvailabilityService);
+            @Nested
+            @DisplayName("And the insert is unable to save")
+            class AndTheInsertIsUnableToSaveTest {
 
-                final var result = employeeAvailabilityController.insertEmployeeAvailability();
+                @Test
+                @DisplayName("Then insertEmployeeAvailability returns failed message")
+                void thenInsertEmployeeAvailabilityReturnsFailedMessage() {
+                    final var employeeAvailabilityController = new EmployeeAvailabilityController(employeeAvailabilityService);
+                    Mockito.doThrow(UnableToSaveEmployeeAvailabilityException.class).when(employeeAvailabilityService).saveAvailability();
 
-                Assertions.assertEquals("Inserted employee availability", result.getBody());
+                    final var result = employeeAvailabilityController.insertEmployeeAvailability();
+
+                    Assertions.assertEquals("Unable to process request at this time", result.getBody());
+                }
+
             }
         }
     }
