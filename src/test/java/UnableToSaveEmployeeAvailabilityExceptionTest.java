@@ -14,4 +14,11 @@ public class UnableToSaveEmployeeAvailabilityExceptionTest {
             Assertions.assertEquals(message, unableToSaveEmployeeAvailabilityException.getMessage());
         }
     }
+
+    @Test
+    void unableToSaveEmployeeAvailabilityExceptionIsThrowable() {
+        Assertions.assertThrows(UnableToSaveEmployeeAvailabilityException.class, () -> {
+            throw new UnableToSaveEmployeeAvailabilityException("Unable to save employee availability");
+        });
+    }
 }
