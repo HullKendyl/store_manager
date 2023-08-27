@@ -66,6 +66,16 @@ public class EmployeeAvailabilityTest {
                     Assertions.assertEquals("Unable to process request at this time", result.getBody());
                 }
 
+                @Test
+                @DisplayName("Then insertEmployeeAvailability returns 500 Internal Server Error")
+                void thenInsertEmployeeAvailabilityReturns500InternalServerError() {
+                    final var employeeAvailabilityController = new EmployeeAvailabilityController(employeeAvailabilityService);
+                    Mockito.doThrow(UnableToSaveEmployeeAvailabilityException.class).when(employeeAvailabilityService).saveAvailability();
+
+                    final var result = employeeAvailabilityController.insertEmployeeAvailability();
+
+                    Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, result.getStatusCode());
+                }
             }
         }
     }
