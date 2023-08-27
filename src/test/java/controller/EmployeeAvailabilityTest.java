@@ -27,6 +27,16 @@ public class EmployeeAvailabilityTest {
 
                 Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
             }
+
+            @Test
+            @DisplayName("Then insertEmployeeAvailability returns success message")
+            void thenInsertEmployeeAvailabilityReturnsSuccessMessage() {
+                final var employeeAvailabilityController = new EmployeeAvailabilityController();
+
+                final var result = employeeAvailabilityController.insertEmployeeAvailability();
+
+                Assertions.assertEquals("Inserted employee availability", result.getBody());
+            }
         }
     }
 }

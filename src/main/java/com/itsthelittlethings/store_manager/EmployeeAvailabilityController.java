@@ -5,6 +5,6 @@ import org.springframework.http.ResponseEntity;
 public class EmployeeAvailabilityController {
 
     public ResponseEntity<String> insertEmployeeAvailability() {
-        return ResponseEntity.ok().body("");
+        return ResponseEntity.ok().body("Inserted employee availability");
     }
 }
