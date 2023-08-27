@@ -1,5 +1,6 @@
 package com.itsthelittlethings.store_manager.controller;
 
+import com.itsthelittlethings.store_manager.EmployeeAvailability;
 import com.itsthelittlethings.store_manager.service.EmployeeAvailabilityService;
 import com.itsthelittlethings.store_manager.UnableToSaveEmployeeAvailabilityException;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +14,10 @@ public class EmployeeAvailabilityController {
     }
 
 
-    public ResponseEntity<String> insertEmployeeAvailability() {
+    public ResponseEntity<String> insertEmployeeAvailability(EmployeeAvailability employeeAvailability) {
+
         try  {
-            employeeAvailabilityService.saveAvailability();
+            employeeAvailabilityService.saveAvailability(employeeAvailability);
         } catch (UnableToSaveEmployeeAvailabilityException unableToSaveEmployeeAvailabilityException) {
             return ResponseEntity.internalServerError().body("Unable to process request at this time");
         }
