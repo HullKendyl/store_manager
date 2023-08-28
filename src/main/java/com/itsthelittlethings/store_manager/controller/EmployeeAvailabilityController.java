@@ -13,7 +13,6 @@ public class EmployeeAvailabilityController {
         this.employeeAvailabilityService = employeeAvailabilityService;
     }
 
-
     public ResponseEntity<String> insertEmployeeAvailability(EmployeeAvailability employeeAvailability) {
 
         try  {
